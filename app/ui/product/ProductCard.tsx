@@ -1,5 +1,5 @@
 import "./ProductCard.css";
-import Image from "next/image";
+// import Image from "next/image";
 
 type Product = {
   id: string;
