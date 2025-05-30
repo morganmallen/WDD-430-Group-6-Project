@@ -4,28 +4,29 @@ const sql = neon(process.env.DATABASE_URL!);
 
 export async function GET() {
   try {
-    const items = await sql`
+    const products = await sql`
       SELECT 
         id,
-        item_name,
-        item_image,
-        item_seller,
+        product_name,
+        product_image,
+        product_seller,
         seller_image,
+        price,
         created_at
-      FROM items 
+      FROM products 
       ORDER BY created_at DESC
     `;
 
     return Response.json({
       success: true,
-      items: items
+      products: products
     });
   } catch (error) {
-    console.error('Error fetching items:', error);
+    console.error('Error fetching products:', error);
     return Response.json(
       { 
         success: false, 
-        error: 'Failed to fetch items', 
+        error: 'Failed to fetch products', 
         details: error 
       }, 
       { status: 500 }
