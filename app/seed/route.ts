@@ -1,11 +1,11 @@
-import { neon } from '@neondatabase/serverless';
+import { neon } from "@neondatabase/serverless";
 
 const sql = neon(process.env.DATABASE_URL!);
 
 async function seedItems() {
   try {
     await sql`DROP TABLE IF EXISTS products`;
-    
+
     await sql`
       CREATE TABLE IF NOT EXISTS products (
         id SERIAL PRIMARY KEY,
@@ -33,7 +33,7 @@ async function seedItems() {
       ('Wireless Headphones', 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400', 'Ryan Cooper', 'https://images.unsplash.com/photo-1463453091185-61582044d556?w=150', 79.99),
       ('Yoga Mat Set', 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400', 'Maya Patel', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150', 34.99),
       ('Electric Skateboard', 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400', 'Carlos Mendez', 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150', 649.00),
-      ('Kitchen Knife Set', 'https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?w=400', 'Sophie Brown', 'https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150', 89.95),
+      ('Kitchen Knife Set', 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400', 'Sophie Brown', 'https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150', 89.95),      
       ('Succulent Plant Collection', 'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400', 'Oliver Green', 'https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=150', 24.99),
       ('Standing Desk', 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400', 'Nina Foster', 'https://images.unsplash.com/photo-1508184964240-ee96bb9677a7?w=150', 349.00),
       ('Vintage Vinyl Records', 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400', 'Ben Taylor', 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=150', 45.50),
@@ -44,15 +44,15 @@ async function seedItems() {
     `;
 
     const result = await sql`SELECT COUNT(*) FROM products`;
-    
+
     return {
       success: true,
-      message: 'Database seeded successfully with marketplace products including prices!',
-      totalItems: result[0].count
+      message:
+        "Database seeded successfully with marketplace products including prices!",
+      totalItems: result[0].count,
     };
-    
   } catch (error) {
-    console.error('Error seeding database:', error);
+    console.error("Error seeding database:", error);
     throw error;
   }
 }
@@ -62,9 +62,9 @@ export async function GET() {
     const result = await seedItems();
     return Response.json(result);
   } catch (error) {
-    console.error('Seeding failed:', error);
+    console.error("Seeding failed:", error);
     return Response.json(
-      { error: 'Failed to seed database', details: error }, 
+      { error: "Failed to seed database", details: error },
       { status: 500 }
     );
   }
