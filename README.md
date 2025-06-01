@@ -1,3 +1,7 @@
+Group project URL: https://github.com/morganmallen/WDD-430-Group-6-Project
+
+The group's Project GitHub Board: https://github.com/users/morganmallen/projects/1
+
 Group Members:
 Jose Antonio Melendez
 Yawogan Abraham Nyuiadzi

@@ -1,6 +1,10 @@
 import ProductCard from "../components/ProductCard";
 import { neon } from '@neondatabase/serverless';
 
+export const metadata = {
+  title: "Products | Handcrafted Haven",
+};
+
 const sql = neon(process.env.DATABASE_URL!);
 
 type DatabaseProduct = {
