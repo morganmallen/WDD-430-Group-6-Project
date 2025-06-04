@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import "./LoginForm.css";
 
 interface FormData {
@@ -15,6 +17,8 @@ export default function LoginForm() {
   });
 
   const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [serverError, setServerError] = useState<string | null>(null);
+  const router = useRouter();
 
   const validateForm = (): boolean => {
     const newErrors: Partial<FormData> = {};
@@ -37,8 +41,22 @@ export default function LoginForm() {
     e.preventDefault();
 
     if (validateForm()) {
-      // TODO: Implement login logic here
-      console.log("Form submitted:", formData);
+      try {
+        const res = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+        const data = await res.json();
+        if (data.success) {
+          // Redirect to homepage with message and user name
+          router.push(`/?message=Your sign in was successful&user=${encodeURIComponent(data.name)}`);
+        } else {
+          setServerError(data.message || "Login failed");
+        }
+      } catch (err) {
+        setServerError("Login failed. Please try again.");
+      }
     }
   };
 
@@ -98,7 +116,15 @@ export default function LoginForm() {
         <button type="submit" className="form-button">
           Sign in
         </button>
+        {serverError && (
+          <div className="error-message" style={{ marginTop: "1rem" }}>
+            {serverError}
+          </div>
+        )}
       </form>
+      <p style={{ marginTop: "1rem", textAlign: "center" }}>
+        Don't have an account? <Link href="/register">Register</Link>
+      </p>
     </div>
   );
 }
