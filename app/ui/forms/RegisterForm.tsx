@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import "./LoginForm.css";
 
 interface FormData {
@@ -21,6 +22,8 @@ export default function RegisterForm() {
   });
 
   const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [serverError, setServerError] = useState<string | null>(null);
+  const router = useRouter();
 
   const validateForm = (): boolean => {
     const newErrors: Partial<FormData> = {};
@@ -62,8 +65,26 @@ export default function RegisterForm() {
     e.preventDefault();
 
     if (validateForm()) {
-      // TODO: Implement registration logic here
-      console.log("Form submitted:", formData);
+      try {
+        const res = await fetch("/api/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: formData.name,
+            organization: formData.organization,
+            email: formData.email,
+            password: formData.password,
+          }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          router.push("/login");
+        } else {
+          setServerError(data.message || "Registration failed");
+        }
+      } catch (err) {
+        setServerError("Registration failed. Please try again.");
+      }
     }
   };
 
@@ -174,6 +195,11 @@ export default function RegisterForm() {
         <button type="submit" className="form-button">
           Create Account
         </button>
+        {serverError && (
+          <div className="error-message" style={{ marginTop: "1rem" }}>
+            {serverError}
+          </div>
+        )}
       </form>
     </div>
   );
