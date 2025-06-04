@@ -82,7 +82,7 @@ export default function RegisterForm() {
         } else {
           setServerError(data.message || "Registration failed");
         }
-      } catch (err) {
+      } catch {
         setServerError("Registration failed. Please try again.");
       }
     }

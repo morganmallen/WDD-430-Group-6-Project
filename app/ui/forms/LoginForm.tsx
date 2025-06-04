@@ -54,7 +54,7 @@ export default function LoginForm() {
         } else {
           setServerError(data.message || "Login failed");
         }
-      } catch (err) {
+      } catch {
         setServerError("Login failed. Please try again.");
       }
     }
@@ -123,7 +123,7 @@ export default function LoginForm() {
         )}
       </form>
       <p style={{ marginTop: "1rem", textAlign: "center" }}>
-        Don't have an account? <Link href="/register">Register</Link>
+        Don’t have an account? <Link href="/register">Register</Link>
       </p>
     </div>
   );
