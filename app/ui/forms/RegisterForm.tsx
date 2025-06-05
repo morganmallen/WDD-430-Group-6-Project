@@ -82,6 +82,7 @@ export default function RegisterForm() {
         } else {
           setServerError(data.message || "Registration failed");
         }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
         setServerError("Registration failed. Please try again.");
       }
