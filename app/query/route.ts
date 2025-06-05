@@ -12,6 +12,10 @@ export async function GET() {
         product_seller,
         seller_image,
         price,
+        description,
+        condition,
+        category,
+        location,
         created_at
       FROM products 
       ORDER BY created_at DESC
