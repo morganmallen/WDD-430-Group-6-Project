@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
+import ThemeToggle from './ThemeToggle';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,6 +15,9 @@ export default function Header() {
       <header className="header">
         <img src="/logo.png" alt="Handcrafted Haven Logo" className="logo" />
         <h1>Handcrafted Haven</h1>
+        <div>
+          <ThemeToggle />
+        </div>
       </header>
       <nav id="animateme" aria-label="Main navigation">
         <button
