@@ -36,7 +36,7 @@ export default function ThemeToggle() {
     backgroundColor: 'white',
     fontSize: '15px',
     color: 'black',
-    border: 'solid',
+    border: 'solid rgba(229, 215, 136, 0.9)',
     cursor: 'pointer',
     boxShadow: '0 4px 10px rgba(0,0,0,0.1)'}}>
     {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
