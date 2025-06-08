@@ -72,6 +72,13 @@ nav {
     transition: max-height 0.3s ease-out; /* Smooth expansion of nav */
 }
 
+.welcome-message {
+  font-size: 1.2rem;
+  color: var(--text);
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
 /* Typography */
 h1 {
     font-family: 'Lusitana', sans-serif; /* Fixed empty font-family */
@@ -135,7 +142,25 @@ h1 {
   text-decoration: underline;
 }
 
-.active a {
+.menulinks .logout-button {
+  color: var(--text);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+  display: block;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.menulinks .logout-button:hover {
+  text-decoration: underline;
+}
+
+.active a, .active .logout-button {
     background-color: rgba(19, 121, 19, 0.9);
     color: #fff;
 }
@@ -307,7 +332,7 @@ body {
     margin-bottom: 0.5rem;
   }
 
-  .active a {
+  .active a, .active .logout-button {
     display: inline-block; /* Wrap background around text */
     padding: 0.2rem 0.5rem; /* Tighten padding for background */
     background-color: rgba(19, 121, 19, 0.9);

@@ -1,6 +1,7 @@
 import { inter } from '../app/ui/fonts';
 import Header from './components/header';
 import Footer from './components/footer';
+import { AuthProvider } from './context/AuthContext';
 import './globals.css';
 
 export const metadata = {
@@ -15,9 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
-        <Header />
-        {children}
-        <Footer />
+        <AuthProvider>
+          <Header />
+          {children}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
