@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuth } from "../../context/AuthContext";
 import "./LoginForm.css";
 
 interface FormData {
@@ -19,6 +20,7 @@ export default function LoginForm() {
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [serverError, setServerError] = useState<string | null>(null);
   const router = useRouter();
+  const { login } = useAuth();
 
   const validateForm = (): boolean => {
     const newErrors: Partial<FormData> = {};
@@ -49,14 +51,20 @@ export default function LoginForm() {
         });
         const data = await res.json();
         if (data.success) {
+          console.log('LoginForm - API success, calling login with name:', data.name); // Debug
+          login(data.name); // Update AuthContext with user name
           // Redirect to homepage with message and user name
           router.push(`/?message=Your sign in was successful&user=${encodeURIComponent(data.name)}`);
         } else {
+          console.log('LoginForm - API failed:', data.message); // Debug
           setServerError(data.message || "Login failed");
         }
       } catch (err) {
+        console.error('LoginForm - Error during login:', err); // Debug
         setServerError("Login failed. Please try again.");
       }
+    } else {
+      console.log('LoginForm - Validation failed:', errors); // Debug
     }
   };
 
@@ -123,7 +131,7 @@ export default function LoginForm() {
         )}
       </form>
       <p style={{ marginTop: "1rem", textAlign: "center" }}>
-        Don't have an account? <Link href="/register">Register</Link>
+        Do not have an account? <Link href="/register">Register</Link>
       </p>
     </div>
   );

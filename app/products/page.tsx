@@ -1,3 +1,4 @@
+import ProductsAuthWrapper from "./ProductsAuthWrapper";
 import ProductCard from "../components/ProductCard";
 import { neon } from '@neondatabase/serverless';
 
@@ -31,7 +32,6 @@ async function fetchProducts(): Promise<DatabaseProduct[]> {
       FROM products 
       ORDER BY created_at DESC
     `;
-    
     return products as DatabaseProduct[];
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -43,11 +43,13 @@ export default async function ProductsPage() {
   const products = await fetchProducts();
 
   return (
-    <div style={gridStyle}>
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </div>
+    <ProductsAuthWrapper>
+      <div style={gridStyle}>
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+    </ProductsAuthWrapper>
   );
 }
 
