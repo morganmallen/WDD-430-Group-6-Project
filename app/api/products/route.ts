@@ -1,7 +1,23 @@
+// app/api/products/route.ts
 import { NextResponse } from "next/server";
 import { neon } from "@neondatabase/serverless";
 
 const sql = neon(process.env.DATABASE_URL!);
+
+// Define a basic Product interface for better type safety
+interface Product {
+  id: number;
+  product_name: string;
+  product_image: string;
+  product_seller: string;
+  seller_image: string;
+  price: number;
+  description: string;
+  condition: string;
+  category: string;
+  location: string | null;
+  created_at: string;
+}
 
 export async function POST(request: Request) {
   try {
@@ -122,7 +138,7 @@ export async function GET(req: Request) {
       FROM products
       WHERE price >= $1 AND price <= $2
     `;
-    let queryParams: (string | number)[] = [minPrice, maxPrice];
+    const queryParams: (string | number)[] = [minPrice, maxPrice];
 
     if (category && category !== 'All') {
       queryParams.push(category);
@@ -142,7 +158,9 @@ export async function GET(req: Request) {
 
     query += ` ORDER BY created_at DESC;`;
 
-    const products: any = await sql.query(query, queryParams);
+    // ESLint workaround: Disable no-explicit-any for this line
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const products: { rows: Product[] } = (await sql.query(query, queryParams)) as any;
 
     return NextResponse.json(products.rows);
   } catch (error) {
