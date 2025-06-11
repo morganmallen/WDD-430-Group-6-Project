@@ -29,8 +29,9 @@ export default function ThemeToggle() {
   return (
     <button onClick={toggleTheme} style={{ 
     position: 'fixed',
-    right: '2rem',
-    top: '2rem',
+    right: '1.5rem',
+    top: '1.5rem',
+    zIndex: '9999',
     padding: '0.75rem 1.5rem',
     borderRadius: '9999px',
     backgroundColor: 'white',

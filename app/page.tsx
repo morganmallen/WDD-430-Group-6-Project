@@ -1,10 +1,11 @@
 "use client";
+import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Page() {
   return (
     <main>
-      {/* Hero Section */}
+      {/*Hero Section*/ }
       <div className="hero-container">
         <div className="hero-border">
           <Image
@@ -15,7 +16,16 @@ export default function Page() {
             height={400}
             priority
           />
-          <div className="hero-text"><h1>Upgrade your space</h1></div>
+          {/* Banner */}
+          <div className="hero-banner">
+            <h1>Upgrade Your Space</h1>
+            <p>Discover handcrafted pieces to transform your home.</p>
+            
+            {/* Link to login */}
+            <Link href="/login">
+              <button>Shop Now</button>
+            </Link>
+          </div>
         </div>
       </div>
     </main>
