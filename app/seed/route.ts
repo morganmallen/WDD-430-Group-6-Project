@@ -4,6 +4,16 @@ const sql = neon(process.env.DATABASE_URL!);
 
 async function seedItems() {
   try {
+    await sql`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255),
+        organization VARCHAR(255),
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255)
+      )
+    `
+
     // Create 'products' table if it does not exist.
     await sql`
       CREATE TABLE IF NOT EXISTS products (
