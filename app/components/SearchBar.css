@@ -1,0 +1,58 @@
+/* search-bar.css or directly in your existing CSS file */
+
+.search-bar-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+  padding: 10px; 
+  border: 2px solid rgba(19, 121, 19, 0.9); 
+  border-radius: 8px;
+  background-color: #ffffff; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
+}
+
+.search-bar-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex-grow: 1; 
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-bar-input:focus {
+  outline: none;
+  border-color: #4a6fa5; 
+  box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+}
+
+.search-bar-select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-bar-select:focus {
+  outline: none;
+  border-color: #4a6fa5;
+  box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 600px) {
+  .search-bar-container {
+    flex-direction: column; 
+    align-items: stretch; 
+    gap: 15px; 
+  }
+
+  .search-bar-input,
+  .search-bar-select {
+    width: 100%; 
+  }
+}

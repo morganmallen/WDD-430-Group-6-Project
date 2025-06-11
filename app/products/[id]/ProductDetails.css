@@ -196,6 +196,12 @@
   margin-bottom: 1rem;
 }
 
+.description-warning {
+  color: red;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
 .description-text:last-child {
   margin-bottom: 0;
 }
@@ -264,10 +270,10 @@
 
 .review-form .stars {
   font-size: 28px;
-  color: #ccc; /* Default star color (unfilled) */
+  color: #ccc; 
   cursor: pointer;
-  display: flex; /* Aligns stars horizontally */
-  gap: 2px; /* Small space between stars */
+  display: flex; 
+  gap: 2px; 
 }
 
 .review-form .star {
@@ -338,19 +344,19 @@
 .login-prompt-text {
     text-align: center;
     font-size: 1.1rem;
-    color: #555; /* A subtle grey for the text */
-    margin: 0; /* Remove default paragraph margin */
+    color: #555; 
+    margin: 0; 
 }
 
 .login-prompt-link {
-    color: #007bff; /* A common blue for links */
-    text-decoration: underline; /* Standard link underline */
-    font-weight: bold; /* Make the link stand out */
-    transition: color 0.2s ease-in-out; /* Smooth transition on hover */
+    color: #007bff; 
+    text-decoration: underline; 
+    font-weight: bold; 
+    transition: color 0.2s ease-in-out; 
 }
 
 .login-prompt-link:hover {
-    color: #0056b3; /* Darker blue on hover */
+    color: #0056b3;
 }
 
 

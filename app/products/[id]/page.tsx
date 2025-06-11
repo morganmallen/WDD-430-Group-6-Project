@@ -246,8 +246,8 @@ export default async function ProductDetailsPage({
         <div className="description-section">
           <h2 className="description-title">Description</h2>
           <div className="description-content">
-            <p className="description-text">{product.description}</p>
-            <p className="description-text">
+            <p className="description-text">{product.description}</p><hr></hr>
+            <p className="description-warning">
               All items are sold as-is. Please contact the seller for any
               specific questions about condition, measurements, or additional
               details before making your purchase decision.
