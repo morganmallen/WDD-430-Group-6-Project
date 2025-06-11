@@ -286,7 +286,7 @@ body {
 /* Responsive Design */
 @media (max-width: 768px) {
   main {
-    padding-top: 100px; /* Adjust for smaller header/nav on mobile */
+    padding-top: 100px; 
   }
 
   .header {
@@ -302,7 +302,7 @@ body {
   }
 
   nav#animateme {
-    top: 50px; /* Adjust for smaller header */
+    top: 50px; 
   }
 
   .menu-toggle {
@@ -323,7 +323,7 @@ body {
 
   .menulinks.open {
     display: flex;
-    max-height: 500px; /* Enough to show all menu items */
+    max-height: 500px; 
     opacity: 1;
   }
 

@@ -1,29 +1,41 @@
-import { neon } from "@neondatabase/serverless";
-import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
+import { notFound } from 'next/navigation';
+import { neon } from '@neondatabase/serverless';
+import Image from 'next/image';
+import Link from 'next/link';
 import "./ProductDetails.css";
+import ClientReviewFormWrapper from "../../components/ClientReviewFormWrapper";
+import ClientProductActions from "../../components/ClientProductActions";
 
-const sql = neon(process.env.DATABASE_URL!);
-
-type Product = {
+// Interfaces for database models
+interface Product {
   id: number;
   product_name: string;
   product_image: string;
   product_seller: string;
   seller_image: string;
   price: number;
-  description?: string;
-  condition?: string;
-  category?: string;
-  location?: string;
+  description: string;
+  condition: string;
+  category: string;
+  location: string | null;
   created_at: string;
-};
+}
 
-async function fetchProduct(id: string): Promise<Product | null> {
+interface DatabaseReview {
+  id: number;
+  product_id: number;
+  user_first_name: string;
+  rating: number;
+  comment: string;
+  created_at: string;
+}
+
+const sql = neon(process.env.DATABASE_URL!);
+
+async function fetchProduct(productId: number): Promise<Product | null> {
   try {
     const products = await sql`
-      SELECT 
+      SELECT
         id,
         product_name,
         product_image,
@@ -35,8 +47,8 @@ async function fetchProduct(id: string): Promise<Product | null> {
         category,
         location,
         created_at
-      FROM products 
-      WHERE id = ${parseInt(id)}
+      FROM products
+      WHERE id = ${productId}
     `;
 
     return (products[0] as Product) || null;
@@ -46,13 +58,42 @@ async function fetchProduct(id: string): Promise<Product | null> {
   }
 }
 
+async function fetchProductReviews(productId: number): Promise<DatabaseReview[]> {
+  try {
+    const reviews = await sql`
+      SELECT
+        id,
+        product_id,
+        user_first_name,
+        rating,
+        comment,
+        created_at
+      FROM product_reviews
+      WHERE product_id = ${productId}
+      ORDER BY created_at DESC
+    ` as DatabaseReview[];
+    return reviews;
+  } catch (error) {
+    console.error(`Error fetching reviews for product ID ${productId}:`, error);
+    return [];
+  }
+}
+
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string }>; 
 }) {
-  const { id } = await params;
-  const product = await fetchProduct(id);
+  const { id } = await params; 
+  const productId = parseInt(id);
+
+  if (isNaN(productId)) {
+    return {
+      title: "Product Not Found | Handcrafted Haven",
+    };
+  }
+
+  const product = await fetchProduct(productId);
 
   if (!product) {
     return {
@@ -71,10 +112,17 @@ export async function generateMetadata({
 export default async function ProductDetailsPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string }>; 
 }) {
-  const { id } = await params;
-  const product = await fetchProduct(id);
+  const { id } = await params; 
+  const productId = parseInt(id);
+
+  if (isNaN(productId)) {
+    notFound();
+  }
+
+  const product = await fetchProduct(productId);
+  const reviews = await fetchProductReviews(productId);
 
   if (!product) {
     notFound();
@@ -187,6 +235,14 @@ export default async function ProductDetailsPage({
             </div>
           </div>
         </div>
+
+        <div style={{ marginTop: '20px', textAlign: 'center' }}>
+          <ClientProductActions
+            productId={product.id}
+            productSellerName={product.product_seller}
+          />
+        </div>
+
         <div className="description-section">
           <h2 className="description-title">Description</h2>
           <div className="description-content">
@@ -198,6 +254,32 @@ export default async function ProductDetailsPage({
             </p>
           </div>
         </div>
+
+        <div className="reviews-section">
+          <h2 className="reviews-title">Customer Reviews</h2>
+          {reviews.length === 0 ? (
+            <p className="no-reviews-message">No reviews yet. Be the first to review this product!</p>
+          ) : (
+            <div className="reviews-list">
+              {reviews.map((review) => (
+                <div key={review.id} className="review-card">
+                  <div className="review-header">
+                    <span className="review-author">{review.user_first_name}</span>
+                    <span className="review-rating">
+                      {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
+                    </span>
+                  </div>
+                  <p className="review-comment">{review.comment}</p>
+                  <span className="review-date">{formatDate(review.created_at)}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <h3 className="review-form-heading">Leave a Review</h3>
+          <ClientReviewFormWrapper productId={productId} />
+        </div>
+
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-import ProductsAuthWrapper from "./ProductsAuthWrapper";
 import ProductCard from "../components/ProductCard";
 import { neon } from '@neondatabase/serverless';
 
@@ -43,13 +42,11 @@ export default async function ProductsPage() {
   const products = await fetchProducts();
 
   return (
-    <ProductsAuthWrapper>
       <div style={gridStyle}>
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
-    </ProductsAuthWrapper>
   );
 }
 

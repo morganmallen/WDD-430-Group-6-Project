@@ -4,26 +4,38 @@ const sql = neon(process.env.DATABASE_URL!);
 
 async function seedItems() {
   try {
-    await sql`DROP TABLE IF EXISTS products`;
-
+    // Create 'products' table if it does not exist.
     await sql`
       CREATE TABLE IF NOT EXISTS products (
-         id SERIAL PRIMARY KEY,
-         product_name VARCHAR(255) NOT NULL,
-         product_image VARCHAR(500) NOT NULL,
-         product_seller VARCHAR(255) NOT NULL,
-         seller_image VARCHAR(500) NOT NULL,
-         price DECIMAL(10,2) NOT NULL,
-         description TEXT,
-         condition VARCHAR(50),
-         category VARCHAR(100),
-         location VARCHAR(255),
-         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          id SERIAL PRIMARY KEY,
+          product_name VARCHAR(255) NOT NULL,
+          product_image VARCHAR(500) NOT NULL,
+          product_seller VARCHAR(255) NOT NULL,
+          seller_image VARCHAR(500) NOT NULL,
+          price DECIMAL(10,2) NOT NULL,
+          description TEXT,
+          condition VARCHAR(50),
+          category VARCHAR(100),
+          location VARCHAR(255),
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `;
 
+    // Create 'product_reviews' table if it does not exist.
     await sql`
-      INSERT INTO products (product_name, product_image, product_seller, seller_image, price, description, condition, category, location) VALUES        
+      CREATE TABLE IF NOT EXISTS product_reviews (
+          id SERIAL PRIMARY KEY,
+          product_id INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+          user_first_name VARCHAR(255) NOT NULL,
+          rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+          comment TEXT,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+
+    // Insert sample products into the 'products' table.
+    await sql`
+      INSERT INTO products (product_name, product_image, product_seller, seller_image, price, description, condition, category, location) VALUES
         ('MacBook Pro 2021', 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400', 'Mike Rodriguez', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150', 1299.00, 'MacBook Pro 13-inch with M1 chip, 8GB RAM, 256GB SSD. Barely used, purchased for college but switching to PC. Includes original charger and box. Battery cycle count under 50. Perfect for students or professionals.', 'Used - Like New', 'Electronics', 'Austin, TX'),
         ('Acoustic Guitar', 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=400', 'Emma Thompson', 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150', 325.50, 'Beautiful Yamaha FG830 acoustic guitar. Rich, warm tone perfect for beginners and intermediate players. Comes with a padded gig bag and extra strings. Well-maintained with no major dings or scratches.', 'Used - Good', 'Musical Instruments', 'Nashville, TN'),
         ('Mountain Bike', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400', 'Jake Wilson', 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150', 450.00, 'Trek X-Caliber 7 mountain bike, size Large. Great for trail riding and commuting. Recently serviced with new brake pads and chain. Some wear on the frame but mechanically sound. Ready for your next adventure!', 'Used - Good', 'Sports & Recreation', 'Denver, CO'),
@@ -44,7 +56,7 @@ async function seedItems() {
         ('Smart Watch', 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400', 'Chloe Davis', 'https://images.unsplash.com/photo-1502323777036-f29e3972d82f?w=150', 199.99, 'Apple Watch Series 6, 44mm Space Gray with Sport Band. GPS + Cellular model. Excellent battery life and all health features working perfectly. Light scratches on screen but barely noticeable. Includes charger and box.', 'Used - Good', 'Electronics', 'Atlanta, GA'),
         ('Board Game Collection', 'https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=400', 'Max Rivera', 'https://images.unsplash.com/photo-1528892952291-009c663ce843?w=150', 129.99, 'Collection of 8 popular board games including Catan, Ticket to Ride, and Splendor. All games complete with original pieces and instructions. Perfect for game nights with family and friends. Stored in smoke-free home.', 'Used - Excellent', 'Entertainment', 'Minneapolis, MN'),
         ('Ceramic Vase Set', 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400', 'Aria Walsh', 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150', 65.00, 'Set of 3 handcrafted ceramic vases in different sizes. Beautiful matte finish in neutral tones. Perfect for fresh or dried flowers. Excellent condition with no chips or cracks. Adds elegant touch to any home decor.', 'Used - Like New', 'Home & Garden', 'Richmond, VA')
-ON CONFLICT DO NOTHING
+      ON CONFLICT DO NOTHING
     `;
 
     const result = await sql`SELECT COUNT(*) FROM products`;
@@ -52,7 +64,7 @@ ON CONFLICT DO NOTHING
     return {
       success: true,
       message:
-        "Database seeded successfully with marketplace products including prices!",
+        "Database seeded successfully with marketplace products and ensured review table exists!",
       totalItems: result[0].count,
     };
   } catch (error) {

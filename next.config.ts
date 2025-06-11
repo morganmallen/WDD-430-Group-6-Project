@@ -9,6 +9,34 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+
+      {
+        protocol: "https",
+        hostname: "electromart.com.ng",
+        port: "",
+        pathname: "/**",
+      },
+
+      {
+        protocol: 'https',
+        hostname: 'media.istockphoto.com',
+        port: '', 
+        pathname: '/**', 
+      },
+
+      {
+        protocol: 'https',
+        hostname: 'www.shutterstock.com',
+        port: '', 
+        pathname: '/**', 
+      },
+
+      { 
+        protocol: 'https',
+        hostname: 'plus.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

@@ -1,0 +1,144 @@
+/* Sellers Page Styles */
+
+.sell-product-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.sell-product-title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.sell-product-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.sell-product-form label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+  color: #555;
+  font-size: 1.1rem;
+}
+
+.sell-product-form input[type="text"],
+.sell-product-form input[type="url"],
+.sell-product-form input[type="number"],
+.sell-product-form textarea,
+.sell-product-form select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #333;
+  box-sizing: border-box; /* Ensures padding doesn't increase width */
+}
+
+.sell-product-form input[type="text"]:focus,
+.sell-product-form input[type="url"]:focus,
+.sell-product-form input[type="number"]:focus,
+.sell-product-form textarea:focus,
+.sell-product-form select:focus {
+  outline: none;
+  border-color: #6a0dad; /* A purple tone for focus */
+  box-shadow: 0 0 0 3px rgba(106, 13, 173, 0.2);
+}
+
+.sell-product-form textarea {
+  resize: vertical; /* Allow vertical resizing */
+}
+
+.image-preview-container {
+  margin-top: 1rem;
+  border: 1px dashed #ccc;
+  padding: 1rem;
+  text-align: center;
+  border-radius: 6px;
+}
+
+.image-preview-container p {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #777;
+}
+
+.image-preview {
+  max-width: 100%;
+  height: auto;
+  max-height: 200px; /* Limit preview height */
+  border-radius: 4px;
+  object-fit: contain; /* Ensures image fits without cropping */
+}
+
+.sell-button {
+  width: 100%;
+  padding: 1rem;
+  background-color: rgba(229, 215, 136, 0.9);
+  color: rgba(19, 121, 19, 0.9);
+  border: none;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 1.5rem;
+}
+
+.sell-button:hover {
+  background-color: rgba(19, 121, 19, 0.9);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.sell-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.error-message {
+  color: #e74c3c; /* Red for errors */
+  background-color: #fcebeb;
+  border: 1px solid #e74c3c;
+  padding: 0.8rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.success-message {
+  color: #27ae60; /* Green for success */
+  background-color: #eaf7f1;
+  border: 1px solid #27ae60;
+  padding: 0.8rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.back-link {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.back-link a {
+  color: black;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+}
