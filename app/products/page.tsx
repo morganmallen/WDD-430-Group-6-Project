@@ -120,7 +120,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Available Products</h1>
+      <h1 style={{color: '#333'}}>Available Products</h1>
       {/* Wrap SearchBar in Suspense to resolve the missing-suspense-with-csr-bailout error */}
       <Suspense fallback={<div>Loading search bar...</div>}>
         <SearchBar />
