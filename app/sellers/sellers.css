@@ -1,7 +1,7 @@
 /* Sellers Page Styles */
 
 .sell-product-container {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 2rem auto;
   padding: 2.5rem;
   background-color: #fff;
@@ -16,6 +16,14 @@
   margin-bottom: 2rem;
   font-size: 2.5rem;
   font-weight: 700;
+}
+
+.form-title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
 }
 
 .sell-product-form .form-group {
@@ -42,7 +50,7 @@
   font-size: 1rem;
   color: #333;
   background-color: #f8f8f8;
-  box-sizing: border-box; /* Ensures padding doesn't increase width */
+  box-sizing: border-box;
 }
 
 .sell-product-form input[type="text"]:focus,
@@ -51,12 +59,12 @@
 .sell-product-form textarea:focus,
 .sell-product-form select:focus {
   outline: none;
-  border-color: #6a0dad; /* A purple tone for focus */
+  border-color: #6a0dad;
   box-shadow: 0 0 0 3px rgba(106, 13, 173, 0.2);
 }
 
 .sell-product-form textarea {
-  resize: vertical; /* Allow vertical resizing */
+  resize: vertical;
 }
 
 .image-preview-container {
@@ -76,14 +84,13 @@
 .image-preview {
   max-width: 100%;
   height: auto;
-  max-height: 200px; /* Limit preview height */
+  max-height: 200px;
   border-radius: 4px;
-  object-fit: contain; /* Ensures image fits without cropping */
+  object-fit: contain;
 }
 
 .sell-button {
-  width: 100%;
-  padding: 1rem;
+  padding: 1rem 2rem;
   background-color: rgba(229, 215, 136, 0.9);
   color: rgba(19, 121, 19, 0.9);
   border: none;
@@ -92,7 +99,6 @@
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  margin-top: 1.5rem;
 }
 
 .sell-button:hover {
@@ -107,8 +113,33 @@
   transform: none;
 }
 
+.cancel-button {
+  padding: 1rem 2rem;
+  background-color: #f8f8f8;
+  color: #666;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 1rem;
+}
+
+.cancel-button:hover {
+  background-color: #eee;
+  color: #333;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
 .error-message {
-  color: #e74c3c; /* Red for errors */
+  color: #e74c3c;
   background-color: #fcebeb;
   border: 1px solid #e74c3c;
   padding: 0.8rem;
@@ -119,7 +150,7 @@
 }
 
 .success-message {
-  color: #27ae60; /* Green for success */
+  color: #27ae60;
   background-color: #eaf7f1;
   border: 1px solid #27ae60;
   padding: 0.8rem;
@@ -142,4 +173,22 @@
 
 .back-link a:hover {
   text-decoration: underline;
+}
+
+/* Product Grid Styles */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.no-products {
+  text-align: center;
+  color: #666;
+  font-size: 1.2rem;
+  grid-column: 1 / -1;
+  padding: 2rem;
+  background: #f8f8f8;
+  border-radius: 8px;
 }
