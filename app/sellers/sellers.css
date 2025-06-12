@@ -41,6 +41,7 @@
   border-radius: 6px;
   font-size: 1rem;
   color: #333;
+  background-color: #f8f8f8;
   box-sizing: border-box; /* Ensures padding doesn't increase width */
 }
 
