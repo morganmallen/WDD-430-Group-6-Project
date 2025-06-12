@@ -131,7 +131,7 @@ export default function LoginForm() {
         )}
       </form>
       <p style={{ marginTop: "1rem", textAlign: "center" }}>
-        Do not have an account? <Link href="/register">Register</Link>
+        Do not have an account? <Link href="/register" className="register-link">Register</Link>
       </p>
     </div>
   );
