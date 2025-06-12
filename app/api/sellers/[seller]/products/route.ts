@@ -5,10 +5,10 @@ const sql = neon(process.env.DATABASE_URL!);
 
 export async function GET(
   request: Request,
-  { params }: { params: { seller: string } }
+  { params }: { params: Promise<{ seller: string }> }
 ) {
   try {
-    const { seller } = params;
+    const { seller } = await params;
 
     const products = await sql`
       SELECT *
@@ -25,4 +25,4 @@ export async function GET(
       { status: 500 }
     );
   }
-} 
+}
