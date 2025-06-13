@@ -303,7 +303,7 @@ h1 {
 
 .dark {
   --bg-color: #121212;
-  --text-color: #ffffff;
+  --text-color: #000000;
 }
 
 body {
