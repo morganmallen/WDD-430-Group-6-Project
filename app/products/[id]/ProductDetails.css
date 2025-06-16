@@ -1,6 +1,6 @@
 .product-details-container {
   min-height: 100vh;
-  background-color: #f9f9f9;
+  background-color: var(--bg-color);
   padding: 2rem 0;
 }
 
@@ -13,7 +13,7 @@
 .back-button {
   display: inline-flex;
   align-items: center;
-  color: #333333;
+  color: var(--text-color);
   text-decoration: none;
   margin-bottom: 1.5rem;
   transition: color 0.2s ease;
@@ -31,11 +31,12 @@
 }
 
 .product-details-card {
-  background: white;
+  background: var(--bg-color);
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   margin-bottom: 2rem;
+  border: 1px solid var(--text-color);
 }
 
 .product-layout {
@@ -84,7 +85,7 @@
 .product-title {
   font-size: 2rem;
   font-weight: bold;
-  color: #111827;
+  color: var(--text-color);
   margin-bottom: 1rem;
   line-height: 1.2;
 }
@@ -103,7 +104,7 @@
 .seller-heading {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-color);
   margin-bottom: 1rem;
 }
 
@@ -128,25 +129,26 @@
 
 .seller-name {
   font-weight: 500;
-  color: #111827;
+  color: var(--text-color);
   margin: 0 0 0.25rem 0;
 }
 
 .listing-date {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-color);
+  opacity: 0.7;
   margin: 0;
 }
 
 .product-info-table {
   padding-top: 2rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--text-color);
 }
 
 .info-heading {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-color);
   margin-bottom: 1rem;
 }
 
@@ -163,26 +165,28 @@
 }
 
 .info-label {
-  color: #6b7280;
+  color: var(--text-color);
+  opacity: 0.7;
 }
 
 .info-value {
   font-weight: 500;
-  color: #111827;
+  color: var(--text-color);
 }
 
 .description-section {
-  background: white;
+  background: var(--bg-color);
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 2rem;
   margin-top: 2rem;
+  border: 1px solid var(--text-color);
 }
 
 .description-title {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #111827;
+  color: var(--text-color);
   margin-bottom: 1.5rem;
 }
 
@@ -191,13 +195,13 @@
 }
 
 .description-text {
-  color: #374151;
+  color: var(--text-color);
   line-height: 1.6;
   margin-bottom: 1rem;
 }
 
 .description-warning {
-  color: red;
+  color: #ff4444;
   line-height: 1.6;
   margin-bottom: 1rem;
 }
@@ -237,8 +241,8 @@
 /* This css is for ReviewForm */
 
 .review-form {
-  background-color: #f9f9f9;
-  border: 1px solid rgba(19, 121, 19, 0.9);
+  background-color: var(--bg-color);
+  border: 1px solid var(--text-color);
   border-radius: 11px;
   padding: 25px;
   margin-top: 30px;
@@ -247,14 +251,16 @@
 
 .reviews-section {
   margin-top: 2rem;
-  background-color: #f9f9f9;
-  
+  background-color: var(--bg-color);
 }
 
 .review-card {
   margin-top: 1rem;
   margin-bottom: 2rem;
-  color: rgba(210, 28, 77, 0.9);
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
+  padding: 1rem;
+  border-radius: 8px;
 }
 
 .review-form .form-group {
@@ -265,7 +271,7 @@
   display: block;
   font-weight: 600;
   margin-bottom: 8px;
-  color: #333;
+  color: var(--text-color);
 }
 
 .review-form .stars {
@@ -287,13 +293,13 @@
 .review-form textarea {
   width: 100%;
   padding: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--text-color);
   border-radius: 6px;
   font-size: 1rem;
   resize: vertical;
   box-sizing: border-box;
-  background-color: white; 
-  color: black;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 .review-form textarea:focus {
@@ -346,7 +352,7 @@
 .login-prompt-text {
     text-align: center;
     font-size: 1.1rem;
-    color: #555; 
+    color: var(--text-color);
     margin: 0; 
 }
 
@@ -361,7 +367,48 @@
     color: #0056b3;
 }
 
+.reviews-title {
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+}
 
+.no-reviews-message {
+  color: var(--text-color);
+  text-align: center;
+  padding: 1rem;
+}
+
+.review-form-heading {
+  color: var(--text-color);
+  margin: 2rem 0 1rem;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.review-author {
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.review-rating {
+  color: #ffc107;
+}
+
+.review-comment {
+  color: var(--text-color);
+  margin: 0.5rem 0;
+}
+
+.review-date {
+  color: var(--text-color);
+  opacity: 0.7;
+  font-size: 0.875rem;
+}
 
 @media (max-width: 480px) {
   .product-details-container {

@@ -7,6 +7,8 @@
   --text: rgb(19, 121, 19); /* Solid dark green for WCAG compliance */
   --accent: #000000; /* Black for logo text */
   --neutral: #6B7280; /* Gray for hover */
+  --bg-color: #ffffff;
+  --text-color: #000000;
 }
 
 * {
@@ -22,11 +24,12 @@ body {
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--text-color);
+  background: var(--bg-color);
   font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 a {
@@ -296,14 +299,9 @@ h1 {
 }
 
 /* light/dark themes */
-:root {
-  --bg-color: #ffffff;
-  --text-color: #000000;
-}
-
 .dark {
   --bg-color: #121212;
-  --text-color: #000000;
+  --text-color: #ffffff;
 }
 
 body {

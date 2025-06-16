@@ -2,7 +2,7 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 12px;
-  background-color: #fff;
+  background-color: var(--bg-color);
   text-align: center;
   transition: box-shadow 0.2s ease;
 }
@@ -21,9 +21,19 @@
 .product-name {
   font-size: 1.1rem;
   margin: 10px 0 5px;
+  color: var(--text-color);
 }
 
 .product-price {
-  color: #444;
+  color: var(--text-color);
   font-weight: bold;
+}
+
+.product-seller {
+  margin-top: 8px;
+}
+
+.seller-name {
+  color: var(--text-color);
+  font-size: 0.9rem;
 }

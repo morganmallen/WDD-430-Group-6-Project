@@ -4,15 +4,16 @@
   max-width: 1200px;
   margin: 2rem auto;
   padding: 2.5rem;
-  background-color: #fff;
+  background-color: var(--bg-color);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
+  border: 1px solid var(--text-color);
 }
 
 .sell-product-title {
   text-align: center;
-  color: #333;
+  color: var(--text-color);
   margin-bottom: 2rem;
   font-size: 2.5rem;
   font-weight: 700;
@@ -20,7 +21,7 @@
 
 .form-title {
   text-align: center;
-  color: #333;
+  color: var(--text-color);
   margin-bottom: 1.5rem;
   font-size: 1.8rem;
   font-weight: 600;
@@ -34,7 +35,7 @@
   display: block;
   margin-bottom: 0.6rem;
   font-weight: 600;
-  color: #555;
+  color: var(--text-color);
   font-size: 1.1rem;
 }
 
@@ -45,11 +46,11 @@
 .sell-product-form select {
   width: 100%;
   padding: 0.8rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--text-color);
   border-radius: 6px;
   font-size: 1rem;
-  color: #333;
-  background-color: #f8f8f8;
+  color: var(--text-color);
+  background-color: var(--bg-color);
   box-sizing: border-box;
 }
 
@@ -69,7 +70,7 @@
 
 .image-preview-container {
   margin-top: 1rem;
-  border: 1px dashed #ccc;
+  border: 1px dashed var(--text-color);
   padding: 1rem;
   text-align: center;
   border-radius: 6px;
@@ -78,7 +79,7 @@
 .image-preview-container p {
   margin-bottom: 0.5rem;
   font-weight: 600;
-  color: #777;
+  color: var(--text-color);
 }
 
 .image-preview {
@@ -115,9 +116,9 @@
 
 .cancel-button {
   padding: 1rem 2rem;
-  background-color: #f8f8f8;
-  color: #666;
-  border: 1px solid #ddd;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
   border-radius: 6px;
   font-size: 1.2rem;
   font-weight: 600;
@@ -127,8 +128,8 @@
 }
 
 .cancel-button:hover {
-  background-color: #eee;
-  color: #333;
+  background-color: var(--text-color);
+  color: var(--bg-color);
 }
 
 .form-buttons {
@@ -140,7 +141,7 @@
 
 .error-message {
   color: #e74c3c;
-  background-color: #fcebeb;
+  background-color: rgba(231, 76, 60, 0.1);
   border: 1px solid #e74c3c;
   padding: 0.8rem;
   border-radius: 6px;
@@ -151,7 +152,7 @@
 
 .success-message {
   color: #27ae60;
-  background-color: #eaf7f1;
+  background-color: rgba(39, 174, 96, 0.1);
   border: 1px solid #27ae60;
   padding: 0.8rem;
   border-radius: 6px;
@@ -166,7 +167,7 @@
 }
 
 .back-link a {
-  color: black;
+  color: var(--text-color);
   text-decoration: none;
   font-weight: 600;
 }
@@ -185,10 +186,11 @@
 
 .no-products {
   text-align: center;
-  color: #666;
+  color: var(--text-color);
   font-size: 1.2rem;
   grid-column: 1 / -1;
   padding: 2rem;
-  background: #f8f8f8;
+  background: var(--bg-color);
+  border: 1px solid var(--text-color);
   border-radius: 8px;
 }
