@@ -271,11 +271,11 @@ export default function SellProductPage() {
                 onChange={handleChange}
               >
                 <option value="Electronics">Electronics</option>
-                <option value="Handmade Crafts">Handmade Crafts</option>
-                <option value="Home Decor">Home Decor</option>
-                <option value="Apparel">Apparel</option>
-                <option value="Jewelry">Jewelry</option>
-                <option value="Art & Collectibles">Art & Collectibles</option>
+                <option value="Musical Instruments">Musical Instruments</option>
+                <option value="Sports & Recreation">Sports & Recreation</option>
+                <option value="Fashion & Clothing">Fashion & Clothing</option>
+                <option value="Home & Garden">Home & Garden</option>
+                <option value="Entertainment">Entertainment</option>
                 <option value="Other">Other</option>
               </select>
             </div>
