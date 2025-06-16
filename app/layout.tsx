@@ -1,8 +1,6 @@
-import { inter } from '../app/ui/fonts';
-import Header from './components/header';
-import Footer from './components/footer';
-import { AuthProvider } from './context/AuthContext';
-import './globals.css';
+import { inter } from "../app/ui/fonts";
+import AuthWrapper from "./components/AuthWrapper";
+import "./globals.css";
 
 export const metadata = {
   title: "Home | Handcrafted Haven",
@@ -16,11 +14,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
-        <AuthProvider>
-          <Header />
-          {children}
-          <Footer />
-        </AuthProvider>
+        <AuthWrapper>{children}</AuthWrapper>
       </body>
     </html>
   );

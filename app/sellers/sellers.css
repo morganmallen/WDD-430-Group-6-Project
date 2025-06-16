@@ -3,20 +3,18 @@
 .sell-product-container {
   max-width: 1200px;
   margin: 2rem auto;
-  padding: 2.5rem;
-  background-color: var(--bg-color);
+  padding: 2rem;
+  background-color: white;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
-  border: 1px solid var(--text-color);
 }
 
 .sell-product-title {
-  text-align: center;
   color: var(--text-color);
   margin-bottom: 2rem;
-  font-size: 2.5rem;
-  font-weight: 700;
+  text-align: center;
+  font-size: 2rem;
 }
 
 .form-title {
@@ -188,10 +186,11 @@
 
 /* Product Grid Styles */
 .products-grid {
+  margin-top: 2rem;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
-  margin-top: 2rem;
+  padding: 1rem 0;
 }
 
 .no-products {
@@ -203,4 +202,96 @@
   background: var(--bg-color);
   border: 1px solid var(--text-color);
   border-radius: 8px;
+}
+
+.seller-info {
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.seller-info h2 {
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+  font-size: 1.8rem;
+}
+
+.seller-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.seller-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 3px solid #fff;
+  transition: transform 0.2s ease;
+}
+
+.seller-image:hover {
+  transform: scale(1.05);
+}
+
+.seller-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Profile Section Styles */
+.profile-section {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.profile-section h2 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.profile-info p {
+  margin: 0;
+  color: #555;
+  font-size: 1.1rem;
+}
+
+.profile-info strong {
+  color: var(--text-color);
+  margin-right: 0.5rem;
+  opacity: 1;
+}
+
+.profile-image-container {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.profile-image {
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 3px solid #fff;
+  transition: transform 0.2s ease;
+}
+
+.profile-image:hover {
+  transform: scale(1.05);
 }

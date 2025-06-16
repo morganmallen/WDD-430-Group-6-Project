@@ -1,13 +1,18 @@
-"use client"; 
+"use client";
 
 import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 
 interface ReviewFormProps {
   productId: number;
   userFirstName: string;
 }
 
-export default function ReviewForm({ productId, userFirstName }: ReviewFormProps) {
+export default function ReviewForm({
+  productId,
+  userFirstName,
+}: ReviewFormProps) {
+  const router = useRouter();
   const [rating, setRating] = useState<number>(0); // State for the selected rating
   const [hoverRating, setHoverRating] = useState<number>(0); // State for hover effect
   const [comment, setComment] = useState<string>(""); // State for the comment
@@ -31,7 +36,9 @@ export default function ReviewForm({ productId, userFirstName }: ReviewFormProps
   };
 
   // Function to handle comment changes
-  const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleCommentChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     setComment(event.target.value);
   };
 
@@ -51,10 +58,11 @@ export default function ReviewForm({ productId, userFirstName }: ReviewFormProps
     }
 
     try {
-      const response = await fetch('/api/reviews', { // API route for reviews
-        method: 'POST',
+      const response = await fetch("/api/reviews", {
+        // API route for reviews
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           productId,
@@ -69,11 +77,13 @@ export default function ReviewForm({ productId, userFirstName }: ReviewFormProps
       if (response.ok) {
         setSubmitMessage("Review submitted successfully!");
         setIsError(false);
-        // Optionally clear form fields after successful submission
+        // Clear form fields after successful submission
         setRating(0);
         setComment("");
         setHoverRating(0);
-        
+
+        // Refresh the page to show the new review
+        router.refresh();
       } else {
         setSubmitMessage(data.message || "Failed to submit review.");
         setIsError(true);
@@ -95,7 +105,9 @@ export default function ReviewForm({ productId, userFirstName }: ReviewFormProps
           {[1, 2, 3, 4, 5].map((starValue) => (
             <span
               key={starValue}
-              className={`star ${starValue <= (hoverRating || rating) ? 'filled' : ''}`}
+              className={`star ${
+                starValue <= (hoverRating || rating) ? "filled" : ""
+              }`}
               onClick={() => handleStarClick(starValue)}
               onMouseEnter={() => handleStarHover(starValue)}
             >
@@ -122,7 +134,7 @@ export default function ReviewForm({ productId, userFirstName }: ReviewFormProps
       </button>
 
       {submitMessage && (
-        <p className={`submit-message ${isError ? 'error' : 'success'}`}>
+        <p className={`submit-message ${isError ? "error" : "success"}`}>
           {submitMessage}
         </p>
       )}

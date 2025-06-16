@@ -10,9 +10,10 @@ async function seedItems() {
         name VARCHAR(255),
         organization VARCHAR(255),
         email VARCHAR(255) UNIQUE NOT NULL,
-        password VARCHAR(255)
+        password VARCHAR(255),
+        seller_image VARCHAR(500) DEFAULT 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'
       )
-    `
+    `;
 
     // Create 'products' table if it does not exist.
     await sql`
