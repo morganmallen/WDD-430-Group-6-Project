@@ -1,7 +1,7 @@
-import { notFound } from 'next/navigation';
-import { neon } from '@neondatabase/serverless';
-import Image from 'next/image';
-import Link from 'next/link';
+import { notFound } from "next/navigation";
+import { neon } from "@neondatabase/serverless";
+import Image from "next/image";
+import Link from "next/link";
 import "./ProductDetails.css";
 import ClientReviewFormWrapper from "../../components/ClientReviewFormWrapper";
 import ClientProductActions from "../../components/ClientProductActions";
@@ -58,9 +58,11 @@ async function fetchProduct(productId: number): Promise<Product | null> {
   }
 }
 
-async function fetchProductReviews(productId: number): Promise<DatabaseReview[]> {
+async function fetchProductReviews(
+  productId: number
+): Promise<DatabaseReview[]> {
   try {
-    const reviews = await sql`
+    const reviews = (await sql`
       SELECT
         id,
         product_id,
@@ -71,7 +73,7 @@ async function fetchProductReviews(productId: number): Promise<DatabaseReview[]>
       FROM product_reviews
       WHERE product_id = ${productId}
       ORDER BY created_at DESC
-    ` as DatabaseReview[];
+    `) as DatabaseReview[];
     return reviews;
   } catch (error) {
     console.error(`Error fetching reviews for product ID ${productId}:`, error);
@@ -82,9 +84,9 @@ async function fetchProductReviews(productId: number): Promise<DatabaseReview[]>
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>; 
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = await params; 
+  const { id } = await params;
   const productId = parseInt(id);
 
   if (isNaN(productId)) {
@@ -112,9 +114,9 @@ export async function generateMetadata({
 export default async function ProductDetailsPage({
   params,
 }: {
-  params: Promise<{ id: string }>; 
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = await params; 
+  const { id } = await params;
   const productId = parseInt(id);
 
   if (isNaN(productId)) {
@@ -128,6 +130,7 @@ export default async function ProductDetailsPage({
     notFound();
   }
 
+  // Format the date
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -139,21 +142,8 @@ export default async function ProductDetailsPage({
   return (
     <div className="product-details-container">
       <div className="product-details-wrapper">
-        <Link href="/products" className="back-button">
-          <svg
-            className="back-icon"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-          Back to Products
+        <Link href="/browse" className="back-button">
+          ← Back to Browse
         </Link>
 
         <div className="product-details-card">
@@ -236,7 +226,7 @@ export default async function ProductDetailsPage({
           </div>
         </div>
 
-        <div style={{ marginTop: '20px', textAlign: 'center' }}>
+        <div style={{ marginTop: "20px", textAlign: "center" }}>
           <ClientProductActions
             productId={product.id}
             productSellerName={product.product_seller}
@@ -246,7 +236,8 @@ export default async function ProductDetailsPage({
         <div className="description-section">
           <h2 className="description-title">Description</h2>
           <div className="description-content">
-            <p className="description-text">{product.description}</p><hr></hr>
+            <p className="description-text">{product.description}</p>
+            <hr></hr>
             <p className="description-warning">
               All items are sold as-is. Please contact the seller for any
               specific questions about condition, measurements, or additional
@@ -258,19 +249,26 @@ export default async function ProductDetailsPage({
         <div className="reviews-section">
           <h2 className="reviews-title">Customer Reviews</h2>
           {reviews.length === 0 ? (
-            <p className="no-reviews-message">No reviews yet. Be the first to review this product!</p>
+            <p className="no-reviews-message">
+              No reviews yet. Be the first to review this product!
+            </p>
           ) : (
             <div className="reviews-list">
               {reviews.map((review) => (
                 <div key={review.id} className="review-card">
                   <div className="review-header">
-                    <span className="review-author">{review.user_first_name}</span>
+                    <span className="review-author">
+                      {review.user_first_name}
+                    </span>
                     <span className="review-rating">
-                      {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
+                      {"★".repeat(review.rating)}
+                      {"☆".repeat(5 - review.rating)}
                     </span>
                   </div>
                   <p className="review-comment">{review.comment}</p>
-                  <span className="review-date">{formatDate(review.created_at)}</span>
+                  <span className="review-date">
+                    {formatDate(review.created_at)}
+                  </span>
                 </div>
               ))}
             </div>
@@ -279,7 +277,6 @@ export default async function ProductDetailsPage({
           <h3 className="review-form-heading">Leave a Review</h3>
           <ClientReviewFormWrapper productId={productId} />
         </div>
-
       </div>
     </div>
   );

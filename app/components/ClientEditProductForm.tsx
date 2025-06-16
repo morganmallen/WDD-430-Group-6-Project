@@ -4,7 +4,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
-import "../sellers/sellers.css"; 
+import "../sellers/sellers.css";
 
 interface Product {
   id: number;
@@ -24,7 +24,27 @@ interface ClientEditProductFormProps {
   initialProductData: Product;
 }
 
-export default function ClientEditProductForm({ initialProductData }: ClientEditProductFormProps) {
+// Helper function to convert Pixabay photo page URL to direct image URL
+const convertPixabayUrl = (url: string): string => {
+  // If it's already a direct image URL, return as is
+  if (url.includes("cdn.pixabay.com")) {
+    return url;
+  }
+
+  // Extract the photo ID from the Pixabay photo page URL
+  const match = url.match(/photos\/[^/]+\-(\d+)/);
+  if (!match) {
+    return url; // Return original URL if we can't extract the ID
+  }
+
+  const photoId = match[1];
+  // Return a direct image URL using the photo ID
+  return `https://cdn.pixabay.com/photo/${photoId}/1280.jpg`;
+};
+
+export default function ClientEditProductForm({
+  initialProductData,
+}: ClientEditProductFormProps) {
   const router = useRouter();
   const { userName, isLoggedIn } = useAuth();
 
@@ -35,26 +55,45 @@ export default function ClientEditProductForm({ initialProductData }: ClientEdit
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Authorization check (only allow editing by the actual seller)
-  const isAuthorizedToEdit = isLoggedIn && userName === initialProductData.product_seller;
+  const isAuthorizedToEdit =
+    isLoggedIn && userName === initialProductData.product_seller;
 
   // If not authorized, redirect immediately or show a message
   useEffect(() => {
     if (!isLoggedIn) {
       alert("You must be logged in to edit products.");
-      router.push('/login');
+      router.push("/login");
     } else if (userName !== initialProductData.product_seller) {
       alert("You are not authorized to edit this product.");
       router.push(`/products/${initialProductData.id}`); // Redirect back to product details
     }
-  }, [isLoggedIn, userName, initialProductData.product_seller, initialProductData.id, router]);
+  }, [
+    isLoggedIn,
+    userName,
+    initialProductData.product_seller,
+    initialProductData.id,
+    router,
+  ]);
 
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === 'price' ? parseFloat(value) || 0 : value, // Convert price to number
-    }));
+    if (name === "product_image" && value.includes("pixabay.com")) {
+      // Convert Pixabay URL to direct image URL
+      const directUrl = convertPixabayUrl(value);
+      setFormData((prev) => ({
+        ...prev,
+        [name]: directUrl,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: name === "price" ? parseFloat(value) || 0 : value,
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -71,8 +110,15 @@ export default function ClientEditProductForm({ initialProductData }: ClientEdit
     }
 
     // Basic client-side validation
-    if (!formData.product_name || !formData.product_image || formData.price <= 0 || !formData.description) {
-      setError('Please fill in all required fields (Product Name, Image URL, Price, Description).');
+    if (
+      !formData.product_name ||
+      !formData.product_image ||
+      formData.price <= 0 ||
+      !formData.description
+    ) {
+      setError(
+        "Please fill in all required fields (Product Name, Image URL, Price, Description)."
+      );
       setLoading(false);
       return;
     }
@@ -80,9 +126,9 @@ export default function ClientEditProductForm({ initialProductData }: ClientEdit
     try {
       // Send data to the new API route for updating a product
       const res = await fetch(`/api/products/${formData.id}`, {
-        method: 'PUT', // or 'PATCH' if you prefer partial updates
+        method: "PUT", // or 'PATCH' if you prefer partial updates
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData), // Send the entire updated formData
       });
@@ -90,16 +136,16 @@ export default function ClientEditProductForm({ initialProductData }: ClientEdit
       const data = await res.json();
 
       if (res.ok && data.success) {
-        setSuccessMessage('Product updated successfully!');
+        setSuccessMessage("Product updated successfully!");
         // Optionally redirect back to the product details page
         router.push(`/products/${formData.id}`);
         router.refresh(); // Invalidate cache for the product details page
       } else {
-        setError(data.message || 'Failed to update product.');
+        setError(data.message || "Failed to update product.");
       }
     } catch (err) {
-      console.error('Error updating product:', err);
-      setError('An unexpected error occurred. Please try again.');
+      console.error("Error updating product:", err);
+      setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -112,11 +158,14 @@ export default function ClientEditProductForm({ initialProductData }: ClientEdit
 
   return (
     // <<< CHANGE CLASS NAMES HERE >>>
-    <div className="sell-product-container"> {/* Changed from edit-product-form-container */}
-      <form onSubmit={handleSubmit} className="sell-product-form"> {/* Changed from product-form */}
+    <div className="sell-product-container">
+      {" "}
+      {/* Changed from edit-product-form-container */}
+      <form onSubmit={handleSubmit} className="sell-product-form">
+        {" "}
+        {/* Changed from product-form */}
         {error && <p className="error-message">{error}</p>}
         {successMessage && <p className="success-message">{successMessage}</p>}
-
         <div className="form-group">
           <label htmlFor="product_name">Product Name:</label>
           <input
@@ -128,7 +177,6 @@ export default function ClientEditProductForm({ initialProductData }: ClientEdit
             required
           />
         </div>
-
         <div className="form-group">
           <label htmlFor="product_image">Product Image URL:</label>
           <input
@@ -138,15 +186,24 @@ export default function ClientEditProductForm({ initialProductData }: ClientEdit
             value={formData.product_image}
             onChange={handleChange}
             required
+            placeholder="Enter Pixabay photo page URL or direct image URL"
           />
+          <small className="form-help-text">
+            You can paste a Pixabay photo page URL (e.g.,
+            https://pixabay.com/photos/...) or a direct image URL. If using
+            Pixabay, we'll automatically convert it to a direct image URL.
+          </small>
           {formData.product_image && (
             <div className="image-preview-container">
               <p>Image Preview:</p>
-              <img src={formData.product_image} alt="Product Preview" className="image-preview" />
+              <img
+                src={formData.product_image}
+                alt="Product Preview"
+                className="image-preview"
+              />
             </div>
           )}
         </div>
-
         <div className="form-group">
           <label htmlFor="seller_image">Seller Image URL:</label>
           <input
@@ -158,7 +215,6 @@ export default function ClientEditProductForm({ initialProductData }: ClientEdit
             required
           />
         </div>
-
         <div className="form-group">
           <label htmlFor="price">Price ($):</label>
           <input
@@ -172,7 +228,6 @@ export default function ClientEditProductForm({ initialProductData }: ClientEdit
             required
           />
         </div>
-
         <div className="form-group">
           <label htmlFor="description">Description:</label>
           <textarea
@@ -184,13 +239,12 @@ export default function ClientEditProductForm({ initialProductData }: ClientEdit
             required
           ></textarea>
         </div>
-
         <div className="form-group">
           <label htmlFor="condition">Condition:</label>
           <select
             id="condition"
             name="condition"
-            value={formData.condition || 'Used - Good'}
+            value={formData.condition || "Used - Good"}
             onChange={handleChange}
           >
             <option value="New">New</option>
@@ -200,13 +254,12 @@ export default function ClientEditProductForm({ initialProductData }: ClientEdit
             <option value="For Parts">For Parts</option>
           </select>
         </div>
-
         <div className="form-group">
           <label htmlFor="category">Category:</label>
           <select
             id="category"
             name="category"
-            value={formData.category || 'Other'}
+            value={formData.category || "Other"}
             onChange={handleChange}
           >
             <option value="Electronics">Electronics</option>
@@ -218,20 +271,18 @@ export default function ClientEditProductForm({ initialProductData }: ClientEdit
             <option value="Other">Other</option>
           </select>
         </div>
-
         <div className="form-group">
           <label htmlFor="location">Location (Optional):</label>
           <input
             type="text"
             id="location"
             name="location"
-            value={formData.location || ''}
+            value={formData.location || ""}
             onChange={handleChange}
           />
         </div>
-
         <button type="submit" disabled={loading} className="sell-button">
-          {loading ? 'Updating Product...' : 'Update Product'}
+          {loading ? "Updating Product..." : "Update Product"}
         </button>
       </form>
     </div>

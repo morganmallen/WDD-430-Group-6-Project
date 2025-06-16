@@ -41,30 +41,39 @@ export default function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Login form submitted with:", { email: formData.email }); // Debug log
 
     if (validateForm()) {
       try {
+        console.log("Sending login request..."); // Debug log
         const res = await fetch("/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include", // Important for cookies
           body: JSON.stringify(formData),
         });
         const data = await res.json();
+        console.log("Login API response:", data); // Debug log
+
         if (data.success) {
-          console.log('LoginForm - API success, calling login with name:', data.name); // Debug
-          login(data.name); // Update AuthContext with user name
-          // Redirect to homepage with message and user name
-          router.push(`/?message=Your sign in was successful&user=${encodeURIComponent(data.name)}`);
+          console.log(
+            "Login successful, updating context with name:",
+            data.name
+          ); // Debug log
+          login(data.name); // This now just updates the state, no API call
+          console.log("Login context updated, redirecting..."); // Debug log
+          router.push("/");
+          router.refresh(); // Force a refresh to update all components
         } else {
-          console.log('LoginForm - API failed:', data.message); // Debug
+          console.log("Login failed:", data.message); // Debug log
           setServerError(data.message || "Login failed");
         }
       } catch (err) {
-        console.error('LoginForm - Error during login:', err); // Debug
+        console.error("Login error:", err); // Debug log
         setServerError("Login failed. Please try again.");
       }
     } else {
-      console.log('LoginForm - Validation failed:', errors); // Debug
+      console.log("Form validation failed:", errors); // Debug log
     }
   };
 
@@ -131,7 +140,10 @@ export default function LoginForm() {
         )}
       </form>
       <p style={{ marginTop: "1rem", textAlign: "center" }}>
-        Do not have an account? <Link href="/register" className="register-link">Register</Link>
+        Do not have an account?{" "}
+        <Link href="/register" className="register-link">
+          Register
+        </Link>
       </p>
     </div>
   );
