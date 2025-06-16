@@ -84,7 +84,7 @@ export default function SellProductPage() {
     }
   }, [sellerImage]);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     if (!isLoggedIn || !userName) return;
 
     try {
@@ -109,11 +109,11 @@ export default function SellProductPage() {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  };
+  }, [isLoggedIn, userName, sellerImage, updateSellerImage]);
 
   useEffect(() => {
     fetchData();
-  }, [isLoggedIn, userName]);
+  }, [fetchData]);
 
   const handleChange = (
     e: React.ChangeEvent<
