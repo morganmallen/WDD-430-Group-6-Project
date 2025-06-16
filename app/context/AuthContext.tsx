@@ -13,6 +13,7 @@ type AuthContextType = {
   userName: string | null;
   login: (name: string) => void;
   logout: () => void;
+  companyName: string | null;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,6 +21,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
+  const [companyName, setCompanyName] = useState<string | null>(null);
   const router = useRouter();
 
   // Check authentication status on mount
@@ -38,15 +40,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           console.log("Auth successful, setting user:", data.name); // Debug log
           setIsLoggedIn(true);
           setUserName(data.name);
+          setCompanyName(data.companyName || null);
         } else {
           console.log("Auth failed:", data.message); // Debug log
           setIsLoggedIn(false);
           setUserName(null);
+          setCompanyName(null);
         }
       } catch (error) {
         console.error("Error checking auth status:", error);
         setIsLoggedIn(false);
         setUserName(null);
+        setCompanyName(null);
       }
     };
 
@@ -71,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       setIsLoggedIn(false);
       setUserName(null);
+      setCompanyName(null);
       router.push("/");
     } catch (error) {
       console.error("Logout error:", error);
@@ -78,7 +84,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, userName, login, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, userName, login, logout, companyName }}
+    >
       {children}
     </AuthContext.Provider>
   );
