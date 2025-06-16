@@ -10,6 +10,7 @@
   border-radius: 8px;
   background-color: #ffffff; 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
+  flex-wrap: wrap;
 }
 
 .search-bar-input {
@@ -20,6 +21,8 @@
   font-size: 1rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   background-color: #f8f8f8;
+  min-width: 200px;
+  color: black;
 }
 
 .search-bar-input:focus {
@@ -37,12 +40,42 @@
   cursor: pointer;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   color: black;
+  min-width: 150px;
 }
 
 .search-bar-select:focus {
   outline: none;
   border-color: #4a6fa5;
   box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+}
+
+.price-range-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 200px;
+}
+
+.price-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  width: 100px;
+  background-color: #f8f8f8;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  color: black;
+}
+
+.price-input:focus {
+  outline: none;
+  border-color: #4a6fa5;
+  box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+}
+
+.price-range-container span {
+  color: #666;
+  font-weight: 500;
 }
 
 /* Responsive adjustments for smaller screens */
@@ -54,7 +87,16 @@
   }
 
   .search-bar-input,
-  .search-bar-select {
+  .search-bar-select,
+  .price-range-container {
     width: 100%; 
+  }
+
+  .price-range-container {
+    justify-content: space-between;
+  }
+
+  .price-input {
+    width: 45%;
   }
 }

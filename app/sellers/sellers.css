@@ -92,8 +92,8 @@
 
 .sell-button {
   padding: 1rem 2rem;
-  background-color: rgba(229, 215, 136, 0.9);
-  color: rgba(19, 121, 19, 0.9);
+  background-color: #137913;
+  color: #ffffff;
   border: none;
   border-radius: 6px;
   font-size: 1.2rem;
@@ -103,13 +103,14 @@
 }
 
 .sell-button:hover {
-  background-color: rgba(19, 121, 19, 0.9);
-  color: #fff;
+  background-color: #0f5d0f;
+  color: #ffffff;
   transform: translateY(-2px);
 }
 
 .sell-button:disabled {
-  background-color: #ccc;
+  background-color: #666666;
+  color: #ffffff;
   cursor: not-allowed;
   transform: none;
 }
@@ -140,14 +141,23 @@
 }
 
 .error-message {
-  color: #e74c3c;
-  background-color: rgba(231, 76, 60, 0.1);
-  border: 1px solid #e74c3c;
+  color: #000000;
+  background-color: #ffffff;
+  border: 2px solid #000000;
   padding: 0.8rem;
   border-radius: 6px;
   margin-bottom: 1.5rem;
   text-align: center;
   font-weight: 600;
+}
+
+/* Dark mode specific styles */
+@media (prefers-color-scheme: dark) {
+  .error-message {
+    color: #ffffff;
+    background-color: #000000;
+    border: 2px solid #ffffff;
+  }
 }
 
 .success-message {

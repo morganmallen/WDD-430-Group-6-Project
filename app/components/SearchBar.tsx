@@ -19,6 +19,17 @@ export function SearchBar() {
     "For Parts",
   ];
 
+  const PRODUCT_CATEGORIES = [
+    "All",
+    "Electronics",
+    "Musical Instruments",
+    "Sports & Recreation",
+    "Fashion & Clothing",
+    "Home & Garden",
+    "Entertainment",
+    "Other"
+  ];
+
   const handleSearch = useDebouncedCallback((term: string) => {
     const params = new URLSearchParams(searchParams);
     if (term) {
@@ -40,21 +51,39 @@ export function SearchBar() {
     router.replace(`${pathname}?${params.toString()}`);
   };
 
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const term = e.target.value;
+    const params = new URLSearchParams(searchParams);
+    if (term && term !== 'All') {
+      params.set('category', term);
+    } else {
+      params.delete('category');
+    }
+    router.replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handlePriceChange = (type: 'min' | 'max', value: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (value) {
+      params.set(type === 'min' ? 'minPrice' : 'maxPrice', value);
+    } else {
+      params.delete(type === 'min' ? 'minPrice' : 'maxPrice');
+    }
+    router.replace(`${pathname}?${params.toString()}`);
+  };
+
   return (
-    // Apply the container class
     <div className="search-bar-container">
       <input
         type="text"
         placeholder="Search products..."
         onChange={(e) => handleSearch(e.target.value)}
         defaultValue={searchParams.get('searchTerm')?.toString() || ''}
-        // Apply the input class
         className="search-bar-input"
       />
       <select
         onChange={handleConditionChange}
         defaultValue={searchParams.get('condition')?.toString() || 'All'}
-        // Apply the select class
         className="search-bar-select"
       >
         <option value="All">All Conditions</option>
@@ -64,6 +93,36 @@ export function SearchBar() {
           </option>
         ))}
       </select>
+      <select
+        onChange={handleCategoryChange}
+        defaultValue={searchParams.get('category')?.toString() || 'All'}
+        className="search-bar-select"
+      >
+        {PRODUCT_CATEGORIES.map((category) => (
+          <option key={category} value={category}>
+            {category}
+          </option>
+        ))}
+      </select>
+      <div className="price-range-container">
+        <input
+          type="number"
+          placeholder="Min Price"
+          onChange={(e) => handlePriceChange('min', e.target.value)}
+          defaultValue={searchParams.get('minPrice')?.toString() || ''}
+          className="price-input"
+          min="0"
+        />
+        <span>-</span>
+        <input
+          type="number"
+          placeholder="Max Price"
+          onChange={(e) => handlePriceChange('max', e.target.value)}
+          defaultValue={searchParams.get('maxPrice')?.toString() || ''}
+          className="price-input"
+          min="0"
+        />
+      </div>
     </div>
   );
 }
