@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useAuth } from "../context/AuthContext";
 import "./profile.css";
 
 export default function ProfilePage() {
-  const { isLoggedIn, userName, companyName } = useAuth();
+  const { isLoggedIn, userName, companyName, sellerImage } = useAuth();
   const router = useRouter();
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [passwordData, setPasswordData] = useState({
@@ -86,7 +87,7 @@ export default function ProfilePage() {
           type: "error",
         });
       }
-    } catch (error) {
+    } catch {
       setPasswordMessage({
         text: "An error occurred while updating password",
         type: "error",
@@ -107,6 +108,16 @@ export default function ProfilePage() {
         <div className="profile-section">
           <h2>Account Information</h2>
           <div className="profile-info">
+            <div className="profile-image-container">
+              <Image
+                src={sellerImage || "/default-seller.png"}
+                alt="Profile"
+                width={150}
+                height={150}
+                style={{ objectFit: "cover" }}
+                className="profile-image"
+              />
+            </div>
             <p>
               <strong>Name:</strong> {userName}
             </p>

@@ -2,15 +2,24 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useAuth } from "../../context/AuthContext";
 import "../profile.css";
 
 export default function EditProfilePage() {
-  const { isLoggedIn, userName, companyName } = useAuth();
+  const {
+    isLoggedIn,
+    userName,
+    companyName,
+    sellerImage,
+    updateUserName,
+    updateSellerImage,
+  } = useAuth();
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: userName || "",
     company: companyName || "",
+    seller_image: sellerImage || "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<{
@@ -43,13 +52,24 @@ export default function EditProfilePage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name,
+          company: formData.company,
+          seller_image: formData.seller_image,
+        }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
         setMessage({ text: "Profile updated successfully!", type: "success" });
+        // Update the auth context with new values
+        if (updateUserName) {
+          updateUserName(formData.name);
+        }
+        if (updateSellerImage) {
+          updateSellerImage(formData.seller_image);
+        }
         // Redirect back to profile after 2 seconds
         setTimeout(() => {
           router.push("/profile");
@@ -60,7 +80,7 @@ export default function EditProfilePage() {
           type: "error",
         });
       }
-    } catch (error) {
+    } catch {
       setMessage({
         text: "An error occurred while updating profile",
         type: "error",
@@ -103,6 +123,36 @@ export default function EditProfilePage() {
                 onChange={handleChange}
                 className="profile-input"
               />
+            </div>
+            <div className="form-group">
+              <label htmlFor="seller_image">Profile Image URL:</label>
+              <input
+                type="url"
+                id="seller_image"
+                name="seller_image"
+                value={formData.seller_image}
+                onChange={handleChange}
+                className="profile-input"
+                placeholder="Enter image URL (https://...)"
+              />
+              <small className="form-help-text">
+                Enter a URL for your profile image. The image should be square
+                and at least 150x150 pixels.
+              </small>
+              {formData.seller_image && (
+                <div className="image-preview-container">
+                  <p>Image Preview:</p>
+                  <div className="image-preview">
+                    <Image
+                      src={formData.seller_image}
+                      alt="Profile Preview"
+                      width={150}
+                      height={150}
+                      style={{ objectFit: "cover" }}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

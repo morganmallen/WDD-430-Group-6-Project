@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import "./sellers.css";
 import { useAuth } from "../context/AuthContext";
 import ProductCard from "../components/ProductCard";
@@ -53,19 +54,19 @@ const convertPixabayUrl = (url: string): string => {
 
 export default function SellProductPage() {
   const router = useRouter();
-  const { userName, isLoggedIn } = useAuth();
+  const { userName, isLoggedIn, sellerImage, updateSellerImage } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  // Initialize form data with empty strings or default values
+  // Initialize form data with existing seller image if available
   const [formData, setFormData] = useState<ProductFormData>({
     product_name: "",
     product_image: "",
     product_seller: userName || "Loading Seller...",
-    seller_image: "",
+    seller_image: sellerImage || "",
     price: 0,
     description: "",
     condition: "Used - Good",
@@ -73,25 +74,46 @@ export default function SellProductPage() {
     location: "",
   });
 
+  // Update form data when sellerImage changes
   useEffect(() => {
-    if (isLoggedIn && userName) {
-      fetchSellerProducts();
+    if (sellerImage) {
+      setFormData((prev) => ({
+        ...prev,
+        seller_image: sellerImage,
+      }));
     }
-  }, [isLoggedIn, userName]);
+  }, [sellerImage]);
 
-  const fetchSellerProducts = async () => {
+  const fetchData = async () => {
+    if (!isLoggedIn || !userName) return;
+
     try {
-      const response = await fetch(`/api/sellers/${userName}/products`);
-      if (response.ok) {
-        const data = await response.json();
-        setProducts(data);
-      } else {
-        console.error("Failed to fetch seller products");
+      // Fetch products
+      const productsResponse = await fetch(`/api/sellers/${userName}/products`);
+      if (productsResponse.ok) {
+        const productsData = await productsResponse.json();
+        setProducts(productsData);
+
+        // Get seller image from the most recent product if no seller image exists
+        if (!sellerImage && productsData.length > 0) {
+          const mostRecentProduct = productsData[0];
+          if (mostRecentProduct.seller_image) {
+            setFormData((prev) => ({
+              ...prev,
+              seller_image: mostRecentProduct.seller_image,
+            }));
+            updateSellerImage(mostRecentProduct.seller_image);
+          }
+        }
       }
     } catch (error) {
-      console.error("Error fetching seller products:", error);
+      console.error("Error fetching data:", error);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, [isLoggedIn, userName]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -130,38 +152,55 @@ export default function SellProductPage() {
       !formData.product_name ||
       !formData.product_image ||
       formData.price <= 0 ||
-      !formData.description
+      !formData.description ||
+      !formData.seller_image
     ) {
       setError(
-        "Please fill in all required fields (Product Name, Image URL, Price, Description)."
+        "Please fill in all required fields (Product Name, Image URL, Price, Description, Seller Avatar)."
       );
       setLoading(false);
       return;
     }
 
-    const payload = {
-      ...formData,
-      product_seller: userName,
-    };
-
     try {
-      const res = await fetch("/api/products", {
+      // First, update the seller's profile image if it's different
+      if (formData.seller_image !== sellerImage) {
+        const profileResponse = await fetch("/api/profile/update", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            seller_image: formData.seller_image,
+          }),
+        });
+
+        if (!profileResponse.ok) {
+          throw new Error("Failed to update profile image");
+        }
+
+        // Update the auth context with new seller image
+        updateSellerImage(formData.seller_image);
+      }
+
+      // Then create the product
+      const productResponse = await fetch("/api/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
+      const data = await productResponse.json();
 
-      if (res.ok && data.success) {
+      if (productResponse.ok && data.success) {
         setSuccessMessage("Product listed successfully!");
         setFormData({
           product_name: "",
           product_image: "",
-          product_seller: userName || "",
-          seller_image: "",
+          product_seller: userName,
+          seller_image: formData.seller_image, // Keep the seller image
           price: 0,
           description: "",
           condition: "Used - Good",
@@ -169,13 +208,13 @@ export default function SellProductPage() {
           location: "",
         });
         setShowForm(false);
-        fetchSellerProducts();
+        fetchData(); // Refresh the products list
         router.refresh();
       } else {
         setError(data.message || "Failed to list product.");
       }
     } catch (err) {
-      console.error("Error listing product:", err);
+      console.error("Error:", err);
       setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -200,6 +239,32 @@ export default function SellProductPage() {
     <div className="sell-product-container">
       <h1 className="sell-product-title">Your Products</h1>
 
+      <div className="profile-section seller-profile-section">
+        <h2>Account Information</h2>
+        <div className="profile-info">
+          <div className="profile-image-container">
+            <Image
+              src={formData.seller_image}
+              alt={`${userName}'s Profile`}
+              width={150}
+              height={150}
+              style={{ objectFit: "cover" }}
+              className="profile-image"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = "/images/default-avatar.png";
+              }}
+            />
+          </div>
+          <p>
+            <strong>Name:</strong> {userName}
+          </p>
+          <p>
+            <strong>Store:</strong> {userName}&apos;s Store
+          </p>
+        </div>
+      </div>
+
       {!showForm && (
         <button
           onClick={() => setShowForm(true)}
@@ -218,6 +283,39 @@ export default function SellProductPage() {
             {successMessage && (
               <p className="success-message">{successMessage}</p>
             )}
+
+            <div className="form-group">
+              <label htmlFor="seller_image">
+                Your Profile Image (Seller Avatar):
+              </label>
+              <input
+                type="url"
+                id="seller_image"
+                name="seller_image"
+                value={formData.seller_image}
+                onChange={handleChange}
+                required
+                placeholder="Enter image URL (https://...)"
+              />
+              <small className="form-help-text">
+                Enter a URL for your profile image. The image should be square
+                and at least 150x150 pixels.
+              </small>
+              {formData.seller_image && (
+                <div className="image-preview-container">
+                  <p>Profile Image Preview:</p>
+                  <div className="image-preview">
+                    <Image
+                      src={formData.seller_image}
+                      alt="Profile Preview"
+                      width={150}
+                      height={150}
+                      style={{ objectFit: "cover" }}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
 
             <div className="form-group">
               <label htmlFor="product_name">Product Name:</label>
@@ -245,32 +343,23 @@ export default function SellProductPage() {
               <small className="form-help-text">
                 You can paste a Pixabay photo page URL (e.g.,
                 https://pixabay.com/photos/...) or a direct image URL. If using
-                Pixabay, we'll automatically convert it to a direct image URL.
+                Pixabay, we&apos;ll automatically convert it to a direct image
+                URL.
               </small>
               {formData.product_image && (
                 <div className="image-preview-container">
                   <p>Image Preview:</p>
-                  <img
-                    src={formData.product_image}
-                    alt="Product Preview"
-                    className="image-preview"
-                  />
+                  <div className="image-preview">
+                    <Image
+                      src={formData.product_image}
+                      alt="Product Preview"
+                      width={300}
+                      height={200}
+                      style={{ objectFit: "cover" }}
+                    />
+                  </div>
                 </div>
               )}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="seller_image">
-                Your Image URL (Seller Avatar):
-              </label>
-              <input
-                type="url"
-                id="seller_image"
-                name="seller_image"
-                value={formData.seller_image}
-                onChange={handleChange}
-                required
-              />
             </div>
 
             <div className="form-group">

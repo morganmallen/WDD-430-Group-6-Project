@@ -14,6 +14,9 @@ type AuthContextType = {
   login: (name: string) => void;
   logout: () => void;
   companyName: string | null;
+  sellerImage: string | null;
+  updateUserName: (newName: string) => void;
+  updateSellerImage: (newImage: string) => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,6 +25,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
   const [companyName, setCompanyName] = useState<string | null>(null);
+  const [sellerImage, setSellerImage] = useState<string | null>(null);
   const router = useRouter();
 
   // Check authentication status on mount
@@ -41,17 +45,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setIsLoggedIn(true);
           setUserName(data.name);
           setCompanyName(data.companyName || null);
+          setSellerImage(data.sellerImage || null);
         } else {
           console.log("Auth failed:", data.message); // Debug log
           setIsLoggedIn(false);
           setUserName(null);
           setCompanyName(null);
+          setSellerImage(null);
         }
       } catch (error) {
         console.error("Error checking auth status:", error);
         setIsLoggedIn(false);
         setUserName(null);
         setCompanyName(null);
+        setSellerImage(null);
       }
     };
 
@@ -77,15 +84,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoggedIn(false);
       setUserName(null);
       setCompanyName(null);
+      setSellerImage(null);
       router.push("/");
     } catch (error) {
       console.error("Logout error:", error);
     }
   };
 
+  const updateUserName = (newName: string) => {
+    console.log("Updating user name to:", newName); // Debug log
+    setUserName(newName);
+  };
+
+  const updateSellerImage = (newImage: string) => {
+    console.log("Updating seller image to:", newImage); // Debug log
+    setSellerImage(newImage);
+  };
+
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, userName, login, logout, companyName }}
+      value={{
+        isLoggedIn,
+        userName,
+        login,
+        logout,
+        companyName,
+        sellerImage,
+        updateUserName,
+        updateSellerImage,
+      }}
     >
       {children}
     </AuthContext.Provider>

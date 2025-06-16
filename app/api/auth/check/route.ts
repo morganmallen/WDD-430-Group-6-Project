@@ -27,7 +27,7 @@ export async function GET() {
 
     // Fetch user details from database
     const users =
-      await sql`SELECT name, organization FROM users WHERE email = ${userEmail}`;
+      await sql`SELECT name, organization, seller_image FROM users WHERE email = ${userEmail}`;
     if (users.length === 0) {
       return NextResponse.json({ success: false, message: "User not found" });
     }
@@ -36,6 +36,7 @@ export async function GET() {
       success: true,
       name: users[0].name,
       companyName: users[0].organization,
+      sellerImage: users[0].seller_image,
     });
   } catch (error) {
     console.error("Error checking auth status:", error);

@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useAuth } from "../context/AuthContext";
 import "../sellers/sellers.css";
 
@@ -157,13 +158,8 @@ export default function ClientEditProductForm({
   }
 
   return (
-    // <<< CHANGE CLASS NAMES HERE >>>
     <div className="sell-product-container">
-      {" "}
-      {/* Changed from edit-product-form-container */}
       <form onSubmit={handleSubmit} className="sell-product-form">
-        {" "}
-        {/* Changed from product-form */}
         {error && <p className="error-message">{error}</p>}
         {successMessage && <p className="success-message">{successMessage}</p>}
         <div className="form-group">
@@ -191,16 +187,20 @@ export default function ClientEditProductForm({
           <small className="form-help-text">
             You can paste a Pixabay photo page URL (e.g.,
             https://pixabay.com/photos/...) or a direct image URL. If using
-            Pixabay, we'll automatically convert it to a direct image URL.
+            Pixabay, we&apos;ll automatically convert it to a direct image URL.
           </small>
           {formData.product_image && (
             <div className="image-preview-container">
               <p>Image Preview:</p>
-              <img
-                src={formData.product_image}
-                alt="Product Preview"
-                className="image-preview"
-              />
+              <div className="image-preview">
+                <Image
+                  src={formData.product_image}
+                  alt="Product Preview"
+                  width={300}
+                  height={200}
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
             </div>
           )}
         </div>
@@ -281,9 +281,18 @@ export default function ClientEditProductForm({
             onChange={handleChange}
           />
         </div>
-        <button type="submit" disabled={loading} className="sell-button">
-          {loading ? "Updating Product..." : "Update Product"}
-        </button>
+        <div className="form-buttons">
+          <button type="submit" disabled={loading} className="sell-button">
+            {loading ? "Updating Product..." : "Update Product"}
+          </button>
+          <button
+            type="button"
+            onClick={() => router.push("/sellers")}
+            className="cancel-button"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );
