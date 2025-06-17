@@ -1,38 +1,76 @@
 "use client";
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { usePathname } from "next/navigation";
+import ThemeToggle from "./ThemeToggle";
+import { useAuth } from "../context/AuthContext";
 
-export default function Footer() {
+export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const { isLoggedIn, logout, userName } = useAuth();
+  const firstName = userName ? userName.split(" ")[0] : "";
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
   return (
-    <footer className="footer">
-      <div className="footer-container">
-        <div className="footer-logo">
-          <Link href="/" aria-label="Handcrafted Haven Home">
-            <Image
-              src="/logo.png"
-              alt="Handcrafted Haven Logo"
-              className="footer-logo img"
-              width={200}
-              height={50}
-            />
-          </Link>
+    <>
+      <header className="header">
+        <Image
+          src="/logo.png"
+          alt="Handcrafted Haven Logo"
+          className="logo"
+          width={200}
+          height={50}
+          priority
+        />
+        <h1>Handcrafted Haven</h1>
+        <div>
+          <ThemeToggle />
         </div>
-        <div className="footer-links">
-          <h3>Contact Us</h3>
-          <ul>
-            <li><a href="mailto:fabianzkp@gmail.com">Email</a></li>
-            <li><a href="tel:+1234567890">Phone: (234) 567-890</a></li>
-          </ul>
-        </div>
-        <div className="footer-social">
-          <h3>Follow Us</h3>
-          <ul>
-            <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">Twitter</a></li>
-            <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">Facebook</a></li>
-            <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">Instagram</a></li>
-          </ul>
-        </div>
-      </div>
-    </footer>
+      </header>
+      <nav id="animateme" aria-label="Main navigation">
+        <button
+          id="myButton"
+          className={`menu-toggle ${isMenuOpen ? "open" : ""}`}
+          aria-label={
+            isMenuOpen ? "Close navigation menu" : "Open navigation menu"
+          }
+          aria-expanded={isMenuOpen}
+          onClick={toggleMenu}
+        ></button>
+        <ul className={`menulinks ${isMenuOpen ? "open" : ""}`}>
+          <li className={pathname === "/" ? "active" : ""}>
+            <Link href="/">Home</Link>
+          </li>
+          <li className={pathname === "/products" ? "active" : ""}>
+            <Link href="/products">Browse</Link>
+          </li>
+          <li className={pathname === "/sellers" ? "active" : ""}>
+            <Link href="/sellers">Sellers</Link>
+          </li>
+          {!isLoggedIn ? (
+            <li className={pathname === "/login" ? "active" : ""}>
+              <Link href="/login">Login</Link>
+            </li>
+          ) : (
+            <>
+              <li className={pathname === "/profile" ? "active" : ""}>
+                <Link href="/profile">Profile</Link>
+              </li>
+              <li>
+                <button onClick={logout} className="logout-button">
+                  Logout
+                </button>
+              </li>
+            </>
+          )}
+        </ul>
+      </nav>
+      {isLoggedIn && userName && (
+        <div className="welcome-message">Welcome, {firstName}!</div>
+      )}
+    </>
   );
 }

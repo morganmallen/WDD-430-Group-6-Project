@@ -63,6 +63,7 @@ header {
     width: 100%; 
     max-width: 200px; 
     height: auto;
+    margin-right: 2.5rem; /* Space between logo and text */
 }
 
 /* Navigation Styles */
@@ -88,7 +89,7 @@ h1 {
     color: #fff; 
     font-size: 4rem; 
     margin-bottom: 0.5rem;
-    margin-left: 5rem; 
+     
 }
 
 /* Menu Button */
@@ -155,7 +156,7 @@ h1 {
   background: none;
   border: none;
   cursor: pointer;
-  text-align: left;
+  text-align: center;
   width: 100%;
 }
 
@@ -190,8 +191,9 @@ h1 {
 }
 
 .footer-logo img {
-  height: 40px;
-  border: 1px solid var(--text); /* Debug: Confirm logo presence */
+  width: 100%; 
+    max-width: 200px; 
+    height: auto;
 }
 
 .footer-logo img:not([src]), .footer-logo img[src=""] {
@@ -320,9 +322,12 @@ body {
     padding: 0.5rem 1rem;
   }
 
-  .header .logo {
-    height: 30px;
-  }
+  .logo {
+      width: 60%; 
+      max-width: 100px; 
+      height: auto;
+      margin-right: 2.5rem; /* Space between logo and text */
+}
 
   .header h1 {
     font-size: 1.2rem;
@@ -366,6 +371,25 @@ body {
     color: #fff;
 }
 
+
+.hero-border {
+    width: 90%; 
+    min-height: 250px; 
+    aspect-ratio: 16 / 10; 
+    
+  }
+
+  .hero-banner h1 {
+    font-size: 2rem; 
+    margin-bottom: 0.8rem; 
+  }
+
+  .hero-banner p {
+    font-size: 1rem; 
+    margin-bottom: 1.2rem;
+  }
+
+
   .footer-container {
     grid-template-columns: 1fr;
     text-align: center;
@@ -374,6 +398,13 @@ body {
   .footer-logo a {
     justify-content: center;
   }
+
+  .footer-logo img {
+    width: 60%; 
+    max-width: 100px; 
+    height: auto;
+  }
+  
 }
 
 @media (prefers-color-scheme: dark) {
