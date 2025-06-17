@@ -48,10 +48,10 @@ A web application designed to empower artisans by offering a digital marketplace
 
 - **Color Scheme**:
 
-  - Primary: Blue (#1E3A8A)
-  - Secondary: White (#FFFFFF)
+  - Primary: rgba(229, 215, 136, 0.9); /* Creamy yellow background */
+  - Secondary: rgb(19, 121, 19); /* Solid dark green */
   - Accent: Black (#000000)
-  - Neutral: Gray (#6B7280)
+  - Neutral: #6B7280; /* Gray for hover */
   - Note: Colors pending WCAG 2.1 AA contrast check.
 
 - **Typography**:
